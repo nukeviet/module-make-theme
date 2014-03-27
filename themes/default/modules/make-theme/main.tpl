@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-Để có thể chuyển html sang giao diện của nukeviet bạn hãy  bố trí file html như sau
+Để có thể chuyển <b>html</b> sang giao diện của <b>NukeViet 4</b> bạn hãy  bố trí file html như sau
 <div style="margin: 20px;">
 	<p>
 		css <span style="color: red">(*)</span>
@@ -83,7 +83,7 @@
 	&lt;!-- end block:tên khối --&gt;
 </p>
 <p>
-	Ghi chú: tên khối dùng tiếng việt không dấu hoặc tiếng anh, có thể sử dụng dấu cách, không dùng ký tự đặc biệt
+	Ghi chú: tên khối dùng tiếng việt không dấu hoặc tiếng anh, có thể sử dụng dấu cách, không dùng ký tự đặc biệt, tên các khối không trùng nhau
 </p>
 <b>Sau đó Nén .ZIP các file này lại Upload hệ site, hệ thống sẽ trả về cấu trúc giao diện: </b>
 <form action="{NV_BASE_SITEURL}index.php?{NV_NAME_VARIABLE}={MODULE_NAME}" method="post"  enctype="multipart/form-data">
