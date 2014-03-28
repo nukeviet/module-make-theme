@@ -149,7 +149,6 @@ function nv_file_layout_html( $dir_theme )
 	//Xóa các dòng trống có tab, hoặc có nhiều hơn 1 dòng trống
 	$html = trim( preg_replace( '/\n([\t\n]+)\n/', "\n\n", $html ) );
 
-	mkdir( $dir_theme . '/html' );
 	if( preg_match_all( '/<!--\sbegin\sblock\:([^\>]+)\s-->/', $html, $variable ) )
 	{
 		foreach( $variable[1] as $tag_i )
@@ -173,9 +172,19 @@ function nv_file_layout_html( $dir_theme )
 
 				$php_block_i .= "function nv4_block_" . $tag_i . "( \$block_config )\n";
 				$php_block_i .= "{\n";
-				$php_block_i .= "\tglobal \$module_info, \$db;\n";
-				$php_block_i .= "\t\$module = \$block_config['module'];\n\n";
-				$php_block_i .= "\t\$xtpl = new XTemplate( 'global." . $tag_i . ".tpl', NV_ROOTDIR . '/themes/' . \$module_info['template'] . '/blocks' );\n";
+				$php_block_i .= "\tglobal \$global_config, \$db, \$site_mods, \$module_name;\n\n";
+
+				$php_block_i .= "\t\$mod_name = 'news'; // or \$module_name;\n";
+				$php_block_i .= "\t\$list = array();\n";
+				$php_block_i .= "\tif( isset( \$site_mods[\$mod_name] ) )\n";
+				$php_block_i .= "\t{\n";
+				$php_block_i .= "\t\t\$mod_file = \$site_mods[\$mod_name]['module_file'];\n";
+				$php_block_i .= "\t\t\$mod_data = \$site_mods[\$mod_name]['module_data'];\n";
+				$php_block_i .= "\t}\n";
+
+				$php_block_i .= "\t\$xtpl = new XTemplate( 'global." . $tag_i . ".tpl', NV_ROOTDIR . '/themes/' . \$global_config['module_theme'] . '/blocks' );\n";
+				$php_block_i .= "\t\$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );\n";
+				$php_block_i .= "\t\$xtpl->assign( 'TEMPLATE', \$global_config['module_theme'] );\n";
 				$php_block_i .= "/*\n";
 				$php_block_i .= "\tforeach( \$list as \$row )\n";
 				$php_block_i .= "\t{\n";
@@ -209,7 +218,6 @@ function nv_file_layout_html( $dir_theme )
 	$a2 = strpos( $html, '<!-- end nv_content -->' );
 	$html_nv_content = substr( $html, $a1, $a2 + strlen( '<!-- end nv_content -->' ) - $a1 );
 	$html = str_replace( $html_nv_content, '{MODULE_CONTENT}', $html );
-	file_put_contents( $dir_theme . '/html/content.tpl', $html_nv_content );
 
 	$a1 = strpos( $html, '<!-- begin nv_body -->' );
 	$a2 = strpos( $html, '<!-- end nv_body -->' );
