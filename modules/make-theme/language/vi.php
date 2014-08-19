@@ -27,5 +27,3 @@ $lang_module['upload_no_exit'] = "Lỗi: Thưu mục giao diện upload không t
 $lang_module['upload_error_zip_file'] = "Lỗi: File upload không phải là file zip";
 $lang_module['upload_error_php_file'] = "Lỗi: File upload không được chứa file php";
 $lang_module['upload_error_index_html'] = "Lỗi: File upload cần có file index.html trong file .zip";
-
-?>
