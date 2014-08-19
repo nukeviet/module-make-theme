@@ -388,6 +388,8 @@ if( $step == 2 )
 
 			if( file_exists( $source_theme . '/css/font-awesome.min.css' ) AND file_exists( $source_theme . '/fonts/FontAwesome.otf' ) AND ! file_exists( $dest_theme . '/css/font-awesome.min.css' ) AND ! file_exists( $dest_theme . '/fonts/FontAwesome.otf' ) )
 			{
+				mkdir( $dest_theme . '/fonts' );
+				
 				copy( $source_theme . '/css/font-awesome.css', $dest_theme . '/css/font-awesome.css' );
 				copy( $source_theme . '/css/font-awesome.min.css', $dest_theme . '/css/font-awesome.min.css' );
 
