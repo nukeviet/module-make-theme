@@ -311,6 +311,7 @@ if( $step == 2 )
 			file_put_contents( $dest_theme . '/layout/footer.tpl', '' );
 			copy( $source_theme . '/layout/block.default.tpl', $dest_theme . '/layout/block.default.tpl' );
 			copy( $source_theme . '/layout/block.no_title.tpl', $dest_theme . '/layout/block.no_title.tpl' );
+			copy( $source_theme . '/layout/simple.tpl', $dest_theme . '/layout/simple.tpl' );
 
 			$array_blocks = nv_file_layout_html( $dest_theme );
 
