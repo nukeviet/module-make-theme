@@ -84,12 +84,12 @@
 			</tr>
 		</tfoot>
 		<!-- BEGIN: loop -->
-		<tbody {POSITION.class}>
+		<tbody>
 			<tr>
 				<td align="center"> {POSITION.id} </td>
-				<td><input type="text" value="{POSITION.tag}" name="position_tag[{POSITION.id}]" readonly="readonly"></td>
-				<td><input type="text" value="{POSITION.name}" name="position_name[{POSITION.id}]"></td>
-				<td><input type="text" value="{POSITION.name_vi}" name="position_name_vi[{POSITION.id}]"></td>
+				<td><input type="text" class="form-control" value="{POSITION.tag}" name="position_tag[{POSITION.id}]" readonly="readonly"></td>
+				<td><input type="text" class="form-control" value="{POSITION.name}" name="position_name[{POSITION.id}]"></td>
+				<td><input type="text" class="form-control" value="{POSITION.name_vi}" name="position_name_vi[{POSITION.id}]"></td>
 			</tr>
 		</tbody>
 		<!-- END: loop -->

@@ -94,9 +94,11 @@ function nv_file_config( $data, $array_blocks )
 function nv_file_layout_body( )
 {
 	$res = '<!-- BEGIN: main -->
-{FILE "header.tpl"}
+{FILE "header_only.tpl"}
+{FILE "header_extended.tpl"}
 {MODULE_CONTENT}
-{FILE "footer.tpl"}
+{FILE "footer_extended.tpl"}
+{FILE "footer_only.tpl"}
 <!-- END: main -->';
 	return $res;
 }
@@ -221,14 +223,24 @@ function nv_file_layout_html( $dir_theme )
 
 	$a1 = strpos( $html, '<!-- begin nv_body -->' );
 	$a2 = strpos( $html, '<!-- end nv_body -->' );
-	$html_header = substr( $html, 0, $a1 );
-	$html_footer = substr( $html, $a2 + strlen( '<!-- end nv_body -->' ) );
+	$a3 = strpos( $html, '<body>' ) + strlen( '<body>' );
+	$a4 = strpos( $html, '</body>' );
+	
+	$html_header_only = substr( $html, 0, $a3 );
+	$html_header = substr( $html, $a3, $a1 - strlen( $html_header_only ) );
+	
+	$html_footer_only = substr( $html, $a4 );
+	$html_footer = substr( $html, $a2 + strlen( '<!-- end nv_body -->' ), - strlen( $html_footer_only ) );
+	
 	$a1 = $a1 + strlen( '<!-- begin nv_body -->' );
 	$html = substr( $html, $a1, $a2 - $a1 );
 
-	file_put_contents( $dir_theme . '/layout/header.tpl', $html_header );
-	file_put_contents( $dir_theme . '/layout/footer.tpl', $html_footer );
-	$html = "<!-- BEGIN: main -->\n{FILE \"header.tpl\"}\n" . $html . "\n{FILE \"footer.tpl\"}\n<!-- END: main -->";
+	file_put_contents( $dir_theme . '/layout/header_only.tpl', $html_header_only );
+	file_put_contents( $dir_theme . '/layout/header_extended.tpl', $html_header );
+	file_put_contents( $dir_theme . '/layout/footer_extended.tpl', $html_footer );
+	file_put_contents( $dir_theme . '/layout/footer_only.tpl', $html_footer_only );
+	
+	$html = "<!-- BEGIN: main -->\n{FILE \"header_only.tpl\"}\n{FILE \"header_extended.tpl\"}\n" . $html . "\n{FILE \"footer_extended.tpl\"}\n{FILE \"footer_only.tpl\"}\n<!-- END: main -->";
 
 	//Xóa các dòng trống có tab, hoặc có nhiều hơn 1 dòng trống
 	$html = trim( preg_replace( '/\n([\t\n]+)\n/', "\n\n", $html ) );
@@ -307,8 +319,10 @@ if( $step == 2 )
 
 			mkdir( $dest_theme . '/layout' );
 			file_put_contents( $dest_theme . '/layout/index.html', '' );
-			file_put_contents( $dest_theme . '/layout/header.tpl', '' );
-			file_put_contents( $dest_theme . '/layout/footer.tpl', '' );
+			file_put_contents( $dest_theme . '/layout/header_extended.tpl', '' );
+			file_put_contents( $dest_theme . '/layout/header_only.tpl', '' );
+			file_put_contents( $dest_theme . '/layout/footer_extended.tpl', '' );
+			file_put_contents( $dest_theme . '/layout/footer_only.tpl', '' );
 			copy( $source_theme . '/layout/block.default.tpl', $dest_theme . '/layout/block.default.tpl' );
 			copy( $source_theme . '/layout/block.no_title.tpl', $dest_theme . '/layout/block.no_title.tpl' );
 			copy( $source_theme . '/layout/simple.tpl', $dest_theme . '/layout/simple.tpl' );
@@ -383,11 +397,11 @@ if( $step == 2 )
 				copy( $source_theme . '/fonts/fontawesome-webfont.ttf', $dest_theme . '/fonts/fontawesome-webfont.ttf' );
 				copy( $source_theme . '/fonts/fontawesome-webfont.woff', $dest_theme . '/fonts/fontawesome-webfont.woff' );
 
-				$html_header = file_get_contents( $dest_theme . '/layout/header.tpl' );
+				$html_header = file_get_contents( $dest_theme . '/layout/header_only.tpl' );
 				if( strpos( $html_header, 'css/font-awesome' ) === false )
 				{
 					$html_header = str_replace( '{THEME_CSS}', "<link href=\"{NV_BASE_SITEURL}themes/{TEMPLATE}/css/font-awesome.min.css\" rel=\"stylesheet\">\n\t{THEME_CSS}", $html_header );
-					file_put_contents( $dest_theme . '/layout/header.tpl', $html_header );
+					file_put_contents( $dest_theme . '/layout/header_only.tpl', $html_header );
 				}
 			}
 			if( ! empty( $data['mod_theme'] ) )
@@ -498,7 +512,6 @@ if( $step == 2 )
 					$tag_i = str_replace( '-', '_', strtoupper( change_alias( $tag_name ) ) );
 					$position = array(
 						'id' => ++$id,
-						'class' => ($id % 2 == 0) ? ' class="second"' : '',
 						'tag' => $tag_i,
 						'name' => $tag_name,
 						'name_vi' => $tag_name
