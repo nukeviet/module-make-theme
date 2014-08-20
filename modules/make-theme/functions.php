@@ -11,5 +11,3 @@
 if( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
 
 define( 'NV_IS_MOD_MAKE_THEME', true );
-
-?>
